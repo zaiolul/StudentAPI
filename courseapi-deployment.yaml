@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\asdf\kompose.exe convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: courseapi
+  name: courseapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: courseapi
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\Users\asdf\kompose.exe convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: courseapi
+    spec:
+      containers:
+        - image: courseapi
+          name: courseapi
+          resources: {}
+      restartPolicy: Always
+status: {}
