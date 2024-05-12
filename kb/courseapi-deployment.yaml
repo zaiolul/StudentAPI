@@ -6,13 +6,13 @@ metadata:
     kompose.version: 1.26.0 (40646f47)
   creationTimestamp: null
   labels:
-    io.kompose.service: studentapi
-  name: studentapi
+    io.kompose.service: courseapi
+  name: courseapi
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: studentapi
+      io.kompose.service: courseapi
   strategy: {}
   template:
     metadata:
@@ -21,11 +21,13 @@ spec:
         kompose.version: 1.26.0 (40646f47)
       creationTimestamp: null
       labels:
-        io.kompose.service: studentapi
+        io.kompose.service: courseapi
     spec:
       containers:
-        - image: studentapi
-          name: studentapi
+        - image: courseapi
+          name: courseapi
+          ports:
+            - containerPort: 8080
           resources: {}
       restartPolicy: Always
 status: {}

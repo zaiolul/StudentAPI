@@ -26,6 +26,8 @@ spec:
       containers:
         - image: apigateway
           name: apigateway
+          ports:
+            - containerPort: 8080
           resources: {}
       restartPolicy: Always
 status: {}

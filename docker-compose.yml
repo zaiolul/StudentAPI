@@ -8,6 +8,8 @@ services:
       dockerfile: StudentAPI/Dockerfile
     depends_on:
       - sqldata
+    ports:
+      - "7001:8080"
   courseapi:
     image: ${DOCKER_REGISTRY-}courseapi
     build:
@@ -15,13 +17,21 @@ services:
       dockerfile: CourseAPI/Dockerfile
     depends_on:
       - sqldata
+    ports:
+      - "7002:8080"
   apigateway:
     image: ${DOCKER_REGISTRY-}apigateway
     build:
       context: .
       dockerfile: ApiGateway/Dockerfile
+    ports:
+      - "7000:8080"
   sqldata:
     image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - "1433:1433"
   rbmq:
     image: rabbitmq:3-management
+    ports:
+      - "15672:15672"
 

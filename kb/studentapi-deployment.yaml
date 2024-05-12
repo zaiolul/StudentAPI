@@ -6,13 +6,13 @@ metadata:
     kompose.version: 1.26.0 (40646f47)
   creationTimestamp: null
   labels:
-    io.kompose.service: sqldata
-  name: sqldata
+    io.kompose.service: studentapi
+  name: studentapi
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: sqldata
+      io.kompose.service: studentapi
   strategy: {}
   template:
     metadata:
@@ -21,11 +21,13 @@ spec:
         kompose.version: 1.26.0 (40646f47)
       creationTimestamp: null
       labels:
-        io.kompose.service: sqldata
+        io.kompose.service: studentapi
     spec:
       containers:
-        - image: mcr.microsoft.com/mssql/server:2019-latest
-          name: sqldata
+        - image: studentapi
+          name: studentapi
+          ports:
+            - containerPort: 8080
           resources: {}
       restartPolicy: Always
 status: {}
