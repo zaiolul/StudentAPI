@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  studentapi:
+    image: ${DOCKER_REGISTRY-}studentapi
+    build:
+      context: .
+      dockerfile: StudentAPI/Dockerfile
+    depends_on:
+      - sqldata
+  courseapi:
+    image: ${DOCKER_REGISTRY-}courseapi
+    build:
+      context: .
+      dockerfile: CourseAPI/Dockerfile
+    depends_on:
+      - sqldata
+  apigateway:
+    image: ${DOCKER_REGISTRY-}apigateway
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+  sqldata:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+  rbmq:
+    image: rabbitmq:3-management
+

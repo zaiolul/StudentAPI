@@ -1,0 +1,47 @@
+version: '3.4'
+
+services:
+  studentapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__StudentAPIContext=Server=sqldata;Database=StudentsTestDB;User Id=sa;Password=B!dpa55W0rd159;Encrypt=False
+      - MQ__Host=rbmq
+      - MQ__UserName=test
+      - MQ__Password=test123!
+    ports:
+      - "7001:8080"
+  courseapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__CourseAPIContext=Server=sqldata;Database=CoursesTestDB;User Id=sa;Password=B!dpa55W0rd159;Encrypt=False
+      - MQ__Host=rbmq
+      - MQ__UserName=test
+      - MQ__Password=test123!
+    ports:
+      - "7002:8080"
+  apigateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+    ports:
+      - "7000:8080"
+  rbmq:
+    environment:
+    - RABBITMQ_DEFAULT_USER=test
+    - RABBITMQ_DEFAULT_PASS=test123!
+    ports:
+    - "5672:5672"
+    - "15672:15672"
+  sqldata:
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=B!dpa55W0rd159
+    ports:
+      - "1433:1433"
+    volumes:
+      - lab2-test-sqldata:/var/opt/mssql_test
+volumes:
+  lab2-test-sqldata:
+    external: false
