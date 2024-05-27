@@ -11,6 +11,8 @@ using RabbitMQ.Client;
 using Newtonsoft.Json;
 using System.Security.Policy;
 using System.Text;
+using MassTransit;
+using ClassLibrary;
 
 namespace CourseAPI.Controllers
 {
@@ -19,11 +21,12 @@ namespace CourseAPI.Controllers
     public class EnrollmentsController : ControllerBase
     {
         Publisher publisher;
+        IPublishEndpoint publishEndpoint;
   
-        public EnrollmentsController(Publisher publisher)
+        public EnrollmentsController(Publisher publisher, IPublishEndpoint publishEndpoint)
         {
             this.publisher = publisher;
-          
+            this.publishEndpoint = publishEndpoint;
         }
 
         [HttpPost]
@@ -32,5 +35,17 @@ namespace CourseAPI.Controllers
             string data = JsonConvert.SerializeObject(en);
             publisher.Publish(data);
         }
+
+        [HttpPost("mtmmsg")]
+        public async void  PublishMessage(string msg)
+        {
+            var mtmmsg = new MTMsg
+            {
+                Timestamp = DateTime.Now,
+                Content = msg
+            };
+            await publishEndpoint.Publish(mtmmsg);
+        }
     }
+  
 }

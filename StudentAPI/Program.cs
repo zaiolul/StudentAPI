@@ -1,3 +1,4 @@
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using StudentAPI;
@@ -27,7 +28,20 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+Console.WriteLine(builder.Configuration["MQ:Host"]!);
+builder.Services.AddMassTransit(busConfigurator =>
+{
+    busConfigurator.AddConsumer<MsgConsumer>();
+    busConfigurator.UsingRabbitMq((context, configurator) =>
+    {
+        configurator.Host(builder.Configuration["MQ:Host"]!, h =>
+        {
+            h.Username(builder.Configuration["MQ:UserName"]);
+            h.Password(builder.Configuration["MQ:Password"]);
+        });
+        configurator.ConfigureEndpoints(context);
+    });
+});
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -36,11 +50,7 @@ using (var scope = app.Services.CreateScope())
     SeedData.Initialize(services);
 }
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
 
 app.UseAuthorization();
 

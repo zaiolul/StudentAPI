@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentAPI.Data;
 using StudentAPI.Models;
+using Grpc.Net.Client;
+using GrpcServiceClient;
+using System.Net.NetworkInformation;
+using System.Threading.Channels;
 
 namespace StudentAPI.Controllers
 {
@@ -103,6 +107,16 @@ namespace StudentAPI.Controllers
         private bool StudentExists(int id)
         {
             return _context.Student.Any(e => e.ID == id);
+        }
+        [HttpGet("grpc")]
+        public async Task<ActionResult> TestGrpcCall(string url)
+        {
+            Console.WriteLine(url);
+            using var channel = GrpcChannel.ForAddress(url);
+            var client = new Greeter.GreeterClient(channel);
+            var reply = await client.SayHelloAsync(
+                              new HelloRequest { Name = "GreeterClient" });
+            return Ok(reply.Message);
         }
     }
 }

@@ -26,6 +26,13 @@ services:
       dockerfile: ApiGateway/Dockerfile
     ports:
       - "7000:8080"
+  grpcservice:
+    image: ${DOCKER_REGISTRY-}grpcservice
+    build:
+      context: .
+      dockerfile: GrpcService/Dockerfile
+    ports:
+      - "7003:8080"
   sqldata:
     image: mcr.microsoft.com/mssql/server:2019-latest
     ports:

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MassTransit;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using StudentAPI.Data;
@@ -7,6 +8,7 @@ using System.Text;
 
 namespace StudentAPI
 {
+  
     public class EnrollmentDataCollector : IHostedService
     {
         private Subscriber subscriber;
@@ -48,5 +50,15 @@ namespace StudentAPI
             }
             return true;
         }
+
+
+       
+
+        //public Task Consume(ConsumeContext<MTMsg> context)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+
     }
 }

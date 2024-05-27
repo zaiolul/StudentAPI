@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: studentapi
+  name: studentapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: studentapi
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: studentapi
+    spec:
+      containers:
+        - env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Development
+            - name: ASPNETCORE_HTTP_PORTS
+              value: "8080"
+            - name: ConnectionStrings__StudentAPIContext
+              value: Server=sqldata;Database=StudentsTestDB;User Id=sa;Password=B!dpa55W0rd159;Encrypt=False
+            - name: MQ__Host
+              value: rbmq
+            - name: MQ__Password
+              value: test123!
+            - name: MQ__UserName
+              value: test
+          image: zzaio/studentapi
+          name: studentapi
+          ports:
+            - containerPort: 8080
+          resources: {}
+      restartPolicy: Always
+status: {}
