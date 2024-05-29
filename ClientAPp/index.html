@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Fetch Example</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Studentai</h1>
+    <div id="data"></div>
+    <script>
+        async function fetchData() {
+            try {
+			console.log('http://apigateway:7000/Students');
+                const response = await fetch('http://apigateway:7000/Students');
+                const data = await response.json();
+                // console.log(data)
+                // document.getElementById('data').innerText = JSON.stringify(data, null, 2);
+                displayDataInTable(data);
+
+            } catch (error) {
+                // document.getElementById('data').innerText = 'Error fetching data';
+            }
+        }
+        function displayDataInTable(data) {
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+
+            // Assuming the data is an array of objects
+            const headers = Object.keys(data[0]);
+
+            // Create table headers
+            const tr = document.createElement('tr');
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.innerText = header;
+                tr.appendChild(th);
+            });
+            thead.appendChild(tr);
+
+            // Create table rows
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                headers.forEach(header => {
+                    const td = document.createElement('td');
+                    td.innerText = item[header];
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+
+            table.appendChild(thead);
+            table.appendChild(tbody);
+            document.getElementById('data').appendChild(table);
+        }
+
+        fetchData();
+    </script>
+</body>
+</html>

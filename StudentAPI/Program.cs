@@ -42,6 +42,19 @@ builder.Services.AddMassTransit(busConfigurator =>
         configurator.ConfigureEndpoints(context);
     });
 });
+
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.AllowAnyOrigin().
+                          AllowAnyHeader().
+                          AllowAnyMethod();
+                      });
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -53,6 +66,7 @@ using (var scope = app.Services.CreateScope())
 
 
 app.UseAuthorization();
+app.UseCors(MyAllowSpecificOrigins);
 
 app.MapControllers();
 
